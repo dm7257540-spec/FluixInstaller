@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FluixInstaller — Fabric Mod Manager</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+  :root{--bg:#0a0a0f;--surface:#0f0f18;--surface2:#141420;--border:#1e1e30;--accent:#4c6ef5;--accent2:#748ffc;--text:#c8d0e0;--text-bright:#eef0f8;--text-dim:#4a5068;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden;}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:18px 60px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,10,15,0.92);backdrop-filter:blur(12px);z-index:100;}
+  .nav-logo{font-size:18px;font-weight:700;color:var(--text-bright);display:flex;align-items:center;gap:8px;}
+  .nav-logo span{color:var(--accent2);}
+  .nav-links{display:flex;gap:32px;list-style:none;}
+  .nav-links a{color:var(--text-dim);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-badge{font-size:12px;font-weight:600;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;}
+  .hero{padding:100px 60px 80px;max-width:1100px;margin:0 auto;}
+  .hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(76,110,245,0.1);border:1px solid rgba(76,110,245,0.25);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--accent2);margin-bottom:28px;letter-spacing:0.04em;text-transform:uppercase;}
+  .hero h1{font-size:64px;font-weight:700;color:var(--text-bright);line-height:1.1;letter-spacing:-2px;margin-bottom:20px;}
+  .hero h1 em{font-style:normal;color:var(--accent2);}
+  .hero p{font-size:18px;color:var(--text-dim);line-height:1.7;max-width:540px;margin-bottom:40px;}
+  .hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+  .btn-primary{background:var(--accent);color:white;border:none;border-radius:10px;padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;font-family:'Space Grotesk',sans-serif;}
+  .btn-primary:hover{background:var(--accent2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(76,110,245,0.35);}
+  .btn-secondary{background:transparent;color:var(--text-dim);border:1px solid var(--border);border-radius:10px;padding:14px 24px;font-size:15px;font-weight:500;cursor:pointer;text-decoration:none;transition:all 0.2s;font-family:'Space Grotesk',sans-serif;}
+  .btn-secondary:hover{color:var(--text);border-color:#2a2a40;}
+  .version-note{font-size:12px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;}
+  .stats-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 60px;display:flex;gap:60px;background:var(--surface);}
+  .stat{display:flex;flex-direction:column;gap:2px;}
+  .stat-num{font-size:22px;font-weight:700;color:var(--text-bright);}
+  .stat-label{font-size:12px;color:var(--text-dim);font-weight:500;}
+  .features{padding:80px 60px;max-width:1100px;margin:0 auto;}
+  .features h2{font-size:36px;font-weight:700;color:var(--text-bright);margin-bottom:48px;letter-spacing:-1px;}
+  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .feature-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;transition:border-color 0.2s;}
+  .feature-card:hover{border-color:#2a2a40;}
+  .feature-icon{font-size:24px;margin-bottom:14px;}
+  .feature-card h3{font-size:15px;font-weight:600;color:var(--text-bright);margin-bottom:8px;}
+  .feature-card p{font-size:13px;color:var(--text-dim);line-height:1.6;}
+  .how-it-works{padding:0 60px 80px;max-width:1100px;margin:0 auto;}
+  .how-it-works h2{font-size:36px;font-weight:700;color:var(--text-bright);margin-bottom:48px;letter-spacing:-1px;}
+  .step{display:flex;gap:24px;padding:24px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+  .step:last-child{border-bottom:none;}
+  .step-num{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--accent2);background:rgba(76,110,245,0.1);border:1px solid rgba(76,110,245,0.2);border-radius:6px;padding:4px 10px;flex-shrink:0;margin-top:2px;}
+  .step-content h3{font-size:16px;font-weight:600;color:var(--text-bright);margin-bottom:6px;}
+  .step-content p{font-size:14px;color:var(--text-dim);line-height:1.6;}
+  .cta{margin:0 60px 80px;background:linear-gradient(135deg,rgba(76,110,245,0.15),rgba(116,143,252,0.08));border:1px solid rgba(76,110,245,0.25);border-radius:16px;padding:48px;display:flex;align-items:center;justify-content:space-between;gap:40px;}
+  .cta h2{font-size:28px;font-weight:700;color:var(--text-bright);margin-bottom:8px;letter-spacing:-0.5px;}
+  .cta p{font-size:14px;color:var(--text-dim);}
+  footer{border-top:1px solid var(--border);padding:24px 60px;display:flex;align-items:center;justify-content:space-between;}
+  footer p{font-size:13px;color:var(--text-dim);}
+  .footer-links{display:flex;gap:24px;}
+  .footer-links a{font-size:13px;color:var(--text-dim);text-decoration:none;}
+  .footer-links a:hover{color:var(--text);}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;}
+  .modal-overlay.active{display:flex;}
+  .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;width:100%;max-width:400px;text-align:center;}
+  .modal h3{font-size:20px;font-weight:700;color:var(--text-bright);margin-bottom:10px;}
+  .modal p{font-size:13px;color:var(--text-dim);margin-bottom:24px;line-height:1.6;}
+  .progress-bar{background:var(--surface2);border-radius:4px;height:4px;overflow:hidden;margin-bottom:16px;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:4px;width:0%;transition:width 0.1s linear;}
+  .modal-note{font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace;}
+  .checkmark{font-size:40px;margin-bottom:12px;display:none;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">⬡ <span>Fluix</span>Installer</div>
+  <ul class="nav-links">
+    <li><a href="#">Features</a></li>
+    <li><a href="#">Docs</a></li>
+    <li><a href="#">Changelog</a></li>
+    <li><a href="#">Support</a></li>
+  </ul>
+  <div class="nav-badge">v2.4.1</div>
+</nav>
+<section class="hero">
+  <div class="hero-tag">✦ Built for Fabric</div>
+  <h1>Install mods<br>without the <em>hassle</em></h1>
+  <p>FluixInstaller automatically finds your Minecraft mods folder and injects your selected mods in one click. No more manual file management.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary" onclick="startDownload();return false;">↓ Download for Windows</a>
+    <a href="#" class="btn-secondary">View source</a>
+    <span class="version-note">v2.4.1 · Windows 10/11</span>
+  </div>
+</section>
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num">84k+</span><span class="stat-label">Downloads</span></div>
+  <div class="stat"><span class="stat-num">4.9★</span><span class="stat-label">Average rating</span></div>
+  <div class="stat"><span class="stat-num">1-click</span><span class="stat-label">Mod injection</span></div>
+  <div class="stat"><span class="stat-num">Free</span><span class="stat-label">Forever</span></div>
+</div>
+<section class="features">
+  <h2>Everything you need</h2>
+  <div class="feature-grid">
+    <div class="feature-card"><div class="feature-icon">⚡</div><h3>One-click inject</h3><p>Select your mod files and hit Inject. FluixInstaller handles finding your mods folder automatically.</p></div>
+    <div class="feature-card"><div class="feature-icon">📁</div><h3>Auto-detects mods folder</h3><p>Works with the default Minecraft launcher out of the box. No configuration needed.</p></div>
+    <div class="feature-card"><div class="feature-icon">🧵</div><h3>Fabric native</h3><p>Built specifically for Fabric. Filters out incompatible mods and warns you before injection.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔒</div><h3>Open source</h3><p>Fully open source. Inspect every line of code before running it on your machine.</p></div>
+    <div class="feature-card"><div class="feature-icon">🪶</div><h3>Lightweight</h3><p>Under 2MB. No bloat, no telemetry, no background services running when you don't need them.</p></div>
+    <div class="feature-card"><div class="feature-icon">🔄</div><h3>Batch install</h3><p>Select multiple mod files at once and inject them all in a single operation.</p></div>
+  </div>
+</section>
+<section class="how-it-works">
+  <h2>How it works</h2>
+  <div class="steps">
+    <div class="step"><span class="step-num">01</span><div class="step-content"><h3>Download FluixInstaller</h3><p>Download the latest release for Windows. No installation required — it's a standalone executable.</p></div></div>
+    <div class="step"><span class="step-num">02</span><div class="step-content"><h3>Open and select your mods</h3><p>Click "Add Mods" to select your .jar mod files. You can select multiple files at once.</p></div></div>
+    <div class="step"><span class="step-num">03</span><div class="step-content"><h3>Hit Inject</h3><p>FluixInstaller copies your mods to the right folder automatically. Launch Minecraft and play.</p></div></div>
+  </div>
+</section>
+<div class="cta">
+  <div><h2>Ready to simplify your modding?</h2><p>Free forever. No account required. Works with any Fabric version.</p></div>
+  <a href="#" class="btn-primary" onclick="startDownload();return false;" style="white-space:nowrap">↓ Download Free</a>
+</div>
+<footer>
+  <p>© 2025 FluixInstaller. Made for the Fabric community.</p>
+  <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">GitHub</a></div>
+</footer>
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="checkmark" id="checkmark">✅</div>
+    <h3 id="modal-title">Preparing download…</h3>
+    <p id="modal-desc">FluixInstaller v2.4.1 for Windows</p>
+    <div class="progress-bar" id="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="modal-note" id="modal-note">FluixInstaller.exe · ~1.8 MB</div>
+  </div>
+</div>
+<script>
+function startDownload(){
+  document.getElementById('modal').classList.add('active');
+  let pct=0;
+  const fill=document.getElementById('progress-fill');
+  const iv=setInterval(()=>{
+    pct+=Math.random()*8+2;
+    if(pct>=100){
+      pct=100;clearInterval(iv);
+      fill.style.width='100%';
+      setTimeout(()=>{
+        document.getElementById('progress-bar').style.display='none';
+        document.getElementById('checkmark').style.display='block';
+        document.getElementById('modal-title').textContent='Download complete!';
+        document.getElementById('modal-desc').textContent='Run FluixInstaller.exe to get started.';
+        document.getElementById('modal-note').textContent='Click anywhere to dismiss';
+        const a=document.createElement('a');a.href='FluixInstaller.exe';a.download='FluixInstaller.exe';a.click();
+      },400);
+    } else { fill.style.width=pct+'%'; }
+  },80);
+  document.getElementById('modal').onclick=function(){
+    if(pct>=100){
+      document.getElementById('modal').classList.remove('active');
+      document.getElementById('progress-bar').style.display='block';
+      document.getElementById('checkmark').style.display='none';
+      document.getElementById('modal-title').textContent='Preparing download…';
+      document.getElementById('modal-desc').textContent='FluixInstaller v2.4.1 for Windows';
+      document.getElementById('progress-fill').style.width='0%';
+      document.getElementById('modal-note').textContent='FluixInstaller.exe · ~1.8 MB';
+    }
+  };
+}
+</script>
+</body>
+</html>
